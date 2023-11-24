@@ -22,7 +22,6 @@ jobs:
         docker images
         docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:$TAG
 
-
     - name: Deploy to server
       uses: appleboy/ssh-action@master
       with:
