@@ -10,12 +10,14 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-
+    env:
+      TAG: 0.3
+      
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-        TAG=$(git log -1 --pretty=%h)
+        #TAG=$(git log -1 --pretty=%h)
         docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ./
         docker images
