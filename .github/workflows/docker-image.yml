@@ -14,11 +14,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
-        #TAG=$(git log -1 --pretty=%h)
         docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:${{github.sha}} ./
         docker images
-        docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:$TAG
+        docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:${{github.sha}}
 
 
     - name: Deploy to server
