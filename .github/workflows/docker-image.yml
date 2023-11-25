@@ -29,8 +29,12 @@ jobs:
         port: ${{ secrets.SERVER_PORT }}
         script: |
             cd compose
+            sudo docker rm -f $(sudo docker ps -qa)
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:${{github.sha}}
+            sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+            sudo docker compose up -d
+            sudo docker image prune -f
             
           
         
