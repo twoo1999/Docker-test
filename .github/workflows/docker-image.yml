@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # - uses: actions/checkout@v3
-    # - name: Build the Docker image
-    #   run: |
-    #     TAG=$(git log -1 --pretty=%h)
-    #     docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
-    #     docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ./
-    #     docker images
-    #     docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:$TAG
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        TAG=$(git log -1 --pretty=%h)
+        docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_TOKEN}}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ./
+        docker images
+        docker push ${{secrets.DOCKER_USERNAME}}/${{secrets.DOCKER_REPO_NAME}}:$TAG
 
 
     - name: Deploy to server
@@ -29,14 +29,14 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_KEY }}
         port: ${{ secrets.SERVER_PORT }}
-        # script: |
-        #     cd compose
-        #     sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-        #     sudo docker rm -f $(sudo docker ps -qa)
-        #     sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG
-        #     sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
-        #     sudo docker-compose up -d
-        #     sudo docker image prune -f
+        script: |
+            cd compose
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+            sudo docker rm -f $(sudo docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG
+            sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:$TAG ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+            sudo docker-compose up -d
+            sudo docker image prune -f
           
         
         
